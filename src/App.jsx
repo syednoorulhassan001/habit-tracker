@@ -1,9 +1,11 @@
 import { useLocalStorage } from "./hooks/useLocalStorage";
+import { useToday } from "./hooks/useToday";
 import HabitForm from "./components/HabitForm";
 import HabitList from "./components/HabitList";
 
 function App() {
   const [habits, setHabits] = useLocalStorage("habit-tracker:habits", []);
+  const today = useToday();
 
   const addHabit = (name) => {
     const habit = {
@@ -19,12 +21,32 @@ function App() {
     setHabits((prev) => prev.filter((habit) => habit.id !== id));
   };
 
+  const toggleHabit = (id) => {
+    setHabits((prev) =>
+      prev.map((habit) => {
+        if (habit.id !== id) return habit;
+        const isDone = habit.completions.includes(today);
+        return {
+          ...habit,
+          completions: isDone
+            ? habit.completions.filter((date) => date !== today)
+            : [...habit.completions, today],
+        };
+      })
+    );
+  };
+
   return (
     <main className="app">
       <h1>Habit Tracker</h1>
       <p className="subtitle">Build habits, one day at a time.</p>
       <HabitForm onAdd={addHabit} />
-      <HabitList habits={habits} onDelete={deleteHabit} />
+      <HabitList
+        habits={habits}
+        today={today}
+        onToggle={toggleHabit}
+        onDelete={deleteHabit}
+      />
     </main>
   );
 }
