@@ -1,6 +1,6 @@
 import HabitItem from "./HabitItem";
 
-function HabitList({ habits, onDelete }) {
+function HabitList({ habits, today, onToggle, onDelete }) {
   if (habits.length === 0) {
     return (
       <p className="empty-state">
@@ -12,7 +12,13 @@ function HabitList({ habits, onDelete }) {
   return (
     <ul className="habit-list">
       {habits.map((habit) => (
-        <HabitItem key={habit.id} habit={habit} onDelete={onDelete} />
+        <HabitItem
+          key={habit.id}
+          habit={habit}
+          isDone={habit.completions.includes(today)}
+          onToggle={onToggle}
+          onDelete={onDelete}
+        />
       ))}
     </ul>
   );
