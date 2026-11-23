@@ -2,6 +2,7 @@ import { useLocalStorage } from "./hooks/useLocalStorage";
 import { useToday } from "./hooks/useToday";
 import HabitForm from "./components/HabitForm";
 import HabitList from "./components/HabitList";
+import DailySummary from "./components/DailySummary";
 
 function App() {
   const [habits, setHabits] = useLocalStorage("habit-tracker:habits", []);
@@ -41,6 +42,7 @@ function App() {
       <h1>Habit Tracker</h1>
       <p className="subtitle">Build habits, one day at a time.</p>
       <HabitForm onAdd={addHabit} />
+      <DailySummary habits={habits} today={today} />
       <HabitList
         habits={habits}
         today={today}
